@@ -3,12 +3,11 @@ import fs from 'node:fs/promises';
 import { sendData, sendError } from './modules/send.js';
 import { checkFile } from './modules/checkFile.js';
 import { handleComediansRequest } from './modules/handleComediansRequest.js';
+import { handleAddClient } from './modules/handleAddClient.js';
 
 const PORT = 8080;
 const COMEDIANS = './comedians.json';
-const CLIENTS = './clients.json';
-
-
+export const CLIENTS = './clients.json';
 
 const startServer = async () => {
   if (!(await checkFile(COMEDIANS))) {
@@ -34,16 +33,23 @@ const startServer = async () => {
         } 
   
         if (req.method === 'POST' && segments[0] === 'clients') {
+          handleAddClient(req, res);
+          return;
           // POST /clients 
           // add client
         }
   
-        if (req.method === 'GET' && segments[0] === 'clients' && segments.length === 1) {
+        if (req.method === 'GET' && segments[0] === 'clients' && segments.length === 2) {
+          const ticket = segments[1];
+          handleClientsRequest(req, res, ticket);
+          return;
           // GET /clients/:ticket
           // get client from ticket number
         }
   
         if (req.method === 'PATCH' && segments[0] === 'clients' && segments.length === 1) {
+          handleUpdateClient(req, res, segments);
+          return;
           // PATCH /clients/:ticket
           // update client from ticket number
         }
