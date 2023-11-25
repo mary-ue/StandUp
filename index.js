@@ -5,6 +5,7 @@ import { checkFile } from './modules/checkFile.js';
 import { handleComediansRequest } from './modules/handleComediansRequest.js';
 import { handleAddClient } from './modules/handleAddClient.js';
 import { handleClientsRequest } from './modules/handleClientsRequest.js';
+import { handleUpdateClient } from './modules/handleUpdateClient.js';
 
 const PORT = 8080;
 const COMEDIANS = './comedians.json';
@@ -48,7 +49,7 @@ const startServer = async () => {
           // get client from ticket number
         }
   
-        if (req.method === 'PATCH' && segments[0] === 'clients' && segments.length === 1) {
+        if (req.method === 'PATCH' && segments[0] === 'clients' && segments.length === 2) {
           handleUpdateClient(req, res, segments);
           return;
           // PATCH /clients/:ticket
